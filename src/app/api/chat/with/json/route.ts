@@ -16,7 +16,7 @@ const loader = new JSONLoader('src/data/city.json', [
     '/city_emblem_image',
 ]);
 
-export const runtime = 'node';
+export const runtime = 'nodejs';
  
 // メッセージの整形
 const formatMessage = (message: VercelChatMessage) => {

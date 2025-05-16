@@ -163,3 +163,19 @@ export function getModel(modelName: string){
   
   return model;
 }
+
+/**
+ * キーワード以降の文字を抜き出す関数
+ * @param input 
+ * @param keyword 
+ * @returns 
+ */
+export function cutKeyword(input: string, keyword: string): string {
+  const index = input.indexOf(keyword);
+  if (index === -1) return input;
+
+  const endIndex = input.indexOf('\n', index);
+  if (endIndex === -1) return input.slice(index + keyword.length);
+  
+  return input.slice(index + keyword.length, endIndex);
+}

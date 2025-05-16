@@ -17,8 +17,8 @@ const secondMessage = new HumanMessage(
 const firstResponse = await chat.invoke([firstMessage]);
 const secondResponse = await chat.invoke([secondMessage]);
 
-console.log({ firstResponse });
-console.log({ secondResponse });
+// console.log({ firstResponse });
+// console.log({ secondResponse });
 
 /**
  * FakeListChatModel は、ストリーミングされた応答をシミュレートするためにも使用できます。
@@ -32,7 +32,7 @@ for await (const chunk of stream) {
   chunks.push(chunk);
 }
 
-console.log(chunks.join(""));
+// console.log(chunks.join(""));
 
 /**
  * FakeListChatModel は、同期応答またはストリーミング応答のいずれかの遅延をシミュレートするためにも使用できます。
@@ -47,7 +47,7 @@ const thirdMessage = new HumanMessage(
   "Why do programmers always mix up Halloween and Christmas?"
 );
 const slowResponse = await slowChat.invoke([thirdMessage]);
-console.log({ slowResponse });
+// console.log({ slowResponse });
 
 const slowStream = await slowChat
   .pipe(new StringOutputParser())
@@ -57,4 +57,4 @@ for await (const chunk of slowStream) {
   slowChunks.push(chunk);
 }
 
-console.log(slowChunks.join(""));
+// console.log(slowChunks.join(""));

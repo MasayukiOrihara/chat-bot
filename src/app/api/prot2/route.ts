@@ -274,7 +274,7 @@ async function isProcessEnd({ messages }: typeof StateAnnotation.State) {
  * グラフ定義
  * messages: 今までのメッセージを保存しているもの
  */
-export const StateAnnotation = Annotation.Root({
+const StateAnnotation = Annotation.Root({
   messages: Annotation<BaseMessage[]>({
     reducer: messagesStateReducer,
     default: () => [],
@@ -386,7 +386,7 @@ export async function POST(req: Request) {
         
     // テンプレートチェック
         if (!template.success) return createErrorResponse(template.error);
-        const found = template.data.find(obj => isObject(obj) && obj['name'] === 'api-prot2');
+        const found = template.data.find(obj => isObject(obj) && obj['name'] === 'api-prot2-aikato');
         if (!found) throw new Error('テンプレートが見つかりませんでした');
     
         // ストリーミング応答を取得

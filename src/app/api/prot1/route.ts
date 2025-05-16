@@ -2,7 +2,7 @@ import { PromptTemplate } from '@langchain/core/prompts';
 import { Message as VercelChatMessage, LangChainAdapter } from 'ai';
 import { StringOutputParser } from '@langchain/core/output_parsers';
 
-import { getModel, isObject, loadJsonFile } from '@/contents/utils';
+import { cutKeyword, getModel, isObject, loadJsonFile } from '@/contents/utils';
 import { PromptTemplateJson } from '@/contents/type';
  
 // チャット形式
@@ -40,14 +40,14 @@ export async function POST(req: Request) {
       });
     }
     // プロンプトテンプレートの抽出
-    const foundPoint = template.data.find(obj => isObject(obj) && obj['name'] === 'api-prot1-point');
     const foundCharacter = template.data.find(obj => isObject(obj) && obj['name'] === 'api-prot1-character');
-    if (!foundPoint || !foundCharacter) {
+    const foundScore = template.data.find(obj => isObject(obj) && obj['name'] === 'api-prot1-score-and-point');
+    if (!foundCharacter || !foundScore) {
       throw new Error('テンプレートが見つかりませんでした');
     }
     // プロンプトの準備
-    const pointingOutPrompt = PromptTemplate.fromTemplate(foundPoint.template);
     const characterPrompt = PromptTemplate.fromTemplate(foundCharacter.template);
+    const scorePrompt = PromptTemplate.fromTemplate(foundScore.template);
 
     // 出力形式の指定
     const outputParser = new StringOutputParser();
@@ -56,30 +56,26 @@ export async function POST(req: Request) {
     const model = getModel(modelName);
 
     // プロンプトとモデルをつなぐ
-    const chain1 = pointingOutPrompt.pipe(model).pipe(outputParser);
-    const chain2 = characterPrompt.pipe(model).pipe(outputParser);
+    const firstChain = scorePrompt.pipe(model).pipe(outputParser);
+    const secondChain = characterPrompt.pipe(model).pipe(outputParser);
 
-    // １回目の質問
-    const output = await chain1.invoke({
+    // 1回目の質問
+    const getScore = await firstChain.invoke({
       input: currentMessageContent,
     });
+    console.log("score: " + getScore);
+
+    // 文字列の切り出し
+    const score = cutKeyword(getScore, "総合点: ");
+    const checkPoint = cutKeyword(score, "指摘ポイント: ");
  
-    // ２回目の質問
-    const stream = await chain2.stream({
+    // 2回目の質問
+    const stream = await secondChain.stream({
       chat_history: formattedPreviousMessages.join('\n'),
       input: currentMessageContent,
-      prompt1_output: output,
+      score: score,
+      prompt1_output: checkPoint,
     });
-
-    // プロンプト2の確認
-    const finalCharacterPrompt = await characterPrompt.format({
-      chat_history: formattedPreviousMessages.join("\n"),
-      input: currentMessageContent,
-      prompt1_output: output,
-    });
-    
-    console.log(output);
-    console.log(finalCharacterPrompt);
  
     return LangChainAdapter.toDataStreamResponse(stream);
   } catch (error) {

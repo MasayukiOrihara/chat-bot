@@ -174,7 +174,7 @@ async function correcrAnswer({ messages }: typeof MessagesAnnotation.State) {
 /**
  * グラフ定義
  */
-export const StateAnnotation = Annotation.Root({
+const StateAnnotation = Annotation.Root({
   messages: Annotation<BaseMessage[]>({
     reducer: messagesStateReducer,
     default: () => [],
