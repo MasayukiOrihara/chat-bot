@@ -108,7 +108,7 @@ async function questionTarget({ messages }: typeof StateAnnotation.State) {
   console.log("questionTarget");
 
   // 問題を出してもらう
-  messages[messages.length -1].content += "上記について話したのち、下記の質問をしてください。\n[開発の仕事を想定し、報連相は誰のためのものか]";
+  messages[messages.length -1].content += "上記について話したのち、生徒に下記の質問をしてください。\n開発の仕事を想定し、報連相は誰のためのものか";
   return {
     messages: [...messages]
   };
