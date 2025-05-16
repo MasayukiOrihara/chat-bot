@@ -386,7 +386,7 @@ export async function POST(req: Request) {
         
     // テンプレートチェック
         if (!template.success) return createErrorResponse(template.error);
-        const found = template.data.find(obj => isObject(obj) && obj['name'] === 'api-prot2');
+        const found = template.data.find(obj => isObject(obj) && obj['name'] === 'api-prot2-aikato');
         if (!found) throw new Error('テンプレートが見つかりませんでした');
     
         // ストリーミング応答を取得
