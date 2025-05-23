@@ -40,3 +40,4 @@ export type Flags ={
     function: boolean;
     quality: boolean;
   }
+

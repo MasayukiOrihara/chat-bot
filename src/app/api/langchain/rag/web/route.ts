@@ -2,7 +2,7 @@ import { ChatAnthropic } from '@langchain/anthropic';
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { FakeListChatModel } from '@langchain/core/utils/testing';
 import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai';
-import { Message as VercelChatMessage, LangChainAdapter } from 'ai';
+import {  LangChainAdapter } from 'ai';
 import { TavilySearchAPIRetriever } from "@langchain/community/retrievers/tavily_search_api";
 import { RunnableSequence } from '@langchain/core/runnables';
 import { Pinecone } from '@pinecone-database/pinecone';
