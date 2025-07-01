@@ -147,6 +147,13 @@ export function getModel(modelName: string){
       temperature: 0.7, // ランダム度（高いほど創造的）
       });
     break;
+    case 'gpt-4o-mini':
+      model = new ChatOpenAI({
+      apiKey: process.env.OPENAI_API_KEY!,
+      model: 'gpt-4o-mini',
+      temperature: 0.7, // ランダム度（高いほど創造的）
+      });
+    break;
     case 'claude-haiku':
       model = new ChatAnthropic({
         model: 'claude-3-5-haiku-20241022',
